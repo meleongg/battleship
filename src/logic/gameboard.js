@@ -3,11 +3,6 @@ import { shipFactory } from "./ship";
 const BOARD_SIDE = 10;
 
 const gameboardFactory = () => {
-    // initialize 2D grid as everything empty
-    // "miss" & call the ship factory's hit() if hit
-    // ships
-    // PROBLEM: how can I connect the ship's length to the gameboard position?
-    // and also consider orientation
     let grid = [["", "", "", "", "", "", "", "", "", ""],
                 ["", "", "", "", "", "", "", "", "", ""],
                 ["", "", "", "", "", "", "", "", "", ""],
@@ -38,6 +33,41 @@ const gameboardFactory = () => {
             let row = coord[1];
 
             grid[col][row] = ship.name; 
+        }
+    }
+
+    const checkValidShot = (col, row) => {
+        if (grid[col][row] === "miss") {
+            return false; 
+        } else if (grid[col][row] === "") {
+            return true; 
+        } else {
+            const ship = grid[col][row];
+            const shipHead = shipHeads[ship];
+            const shipHeadCol = shipHead[0];
+            const shipHeadRow = shipHead[1];
+
+            let orientation = checkOrientation(shipHead, ship);
+            let difference; 
+
+            if (orientation === "x") {
+                difference = col - shipHeadCol;
+            } else {
+                difference = row - shipHeadRow; 
+            }
+
+            switch (ship) {
+                case "destroyer":
+                    return (destroyer.status[difference] === "hit") ? false : true;
+                case "sub":
+                    return (sub.status[difference] === "hit") ? false : true;
+                case "cruiser":
+                    return (cruiser.status[difference] === "hit") ? false : true;
+                case "battleship":
+                    return (battleship.status[difference] === "hit") ? false : true;
+                default: 
+                    return (carrier.status[difference] === "hit") ? false : true;
+            }
         }
     }
 
@@ -95,7 +125,7 @@ const gameboardFactory = () => {
         return true; 
     }
 
-    return { ships, grid, placeShip, receiveAttack, isAllSunk }
+    return { ships, grid, placeShip, checkValidShot, receiveAttack, isAllSunk }
 }
 
 export { gameboardFactory, BOARD_SIDE }

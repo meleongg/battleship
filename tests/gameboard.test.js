@@ -1,5 +1,5 @@
-import { gameboardFactory, BOARD_SIDE } from "../src/gameboard";
-import { shipFactory } from "../src/ship";
+import { gameboardFactory, BOARD_SIDE } from "../src/logic/gameboard";
+import { shipFactory } from "../src/logic/ship";
 
 let testBoard;
 let testBoardFull; 
@@ -95,15 +95,22 @@ test("testBoardFull receiveAttack multiple missed shot", () => {
 
 test("testBoardFull receiveAttack hit destroyer at 0, 0", () => {
     testBoardFull.receiveAttack([0, 0]);
+    expect(testBoardFull.checkValidShot(0, 0)).toBeFalsy();
+    expect(testBoardFull.checkValidShot(9, 9)).toBeTruthy();
     expect(testBoardFull.isAllSunk()).toBeFalsy();
 });
 
 test("testBoardFull receiveAttack sink destroyer & sub", () => {
     testBoardFull.receiveAttack([0, 0]);
+    expect(testBoardFull.checkValidShot(0, 0)).toBeFalsy();
     testBoardFull.receiveAttack([1, 0]);
+    expect(testBoardFull.checkValidShot(1, 0)).toBeFalsy();
     testBoardFull.receiveAttack([2, 0]);
+    expect(testBoardFull.checkValidShot(2, 0)).toBeFalsy();
     testBoardFull.receiveAttack([3, 0]);
+    expect(testBoardFull.checkValidShot(3, 0)).toBeFalsy();
     testBoardFull.receiveAttack([4, 0]);
+    expect(testBoardFull.checkValidShot(4, 0)).toBeFalsy();
     expect(testBoardFull.isAllSunk()).toBeFalsy();
 });
 

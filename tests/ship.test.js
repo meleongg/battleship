@@ -1,4 +1,4 @@
-import { shipFactory } from "../src/ship";
+import { shipFactory } from "../src/logic/ship";
 
 let testShip;
 let testShipLong;
