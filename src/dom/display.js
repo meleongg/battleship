@@ -1,4 +1,5 @@
 import { detectController } from "./detect";
+import { logicController } from "./dom.logic";
 
 const status = document.getElementById("status-message");
 const yourBoard = document.getElementById("your-board");
@@ -11,7 +12,7 @@ const displayController = (() => {
         if (!state) {
             status.innerText = `It is now ${player} turn!`;
         } else {
-            status.innerText = `${player} has won!`;
+            status.innerText = `${player} won!`;
         }
     }
 
@@ -23,14 +24,14 @@ const displayController = (() => {
         let coords = [];
 
         if (boardName === "you") {
-            const col = squareName.substring(12, 14);
-            const row = squareName.substring(16, 18);
+            const col = squareName.substring(12, 13);
+            const row = squareName.substring(14, 15);
 
             coords.push(col);
             coords.push(row);
         } else {
-            const col = squareName.substring(10, 12);
-            const row = squareName.substring(14, 16);
+            const col = squareName.substring(10, 11);
+            const row = squareName.substring(12, 13);
 
             coords.push(col);
             coords.push(row);
@@ -48,8 +49,8 @@ const displayController = (() => {
     const renderBoards = (board1, board2) => {
         _clearBoards();
 
-        for (let col = 0; col < BOARD_SIDE; col++) {
-            for (let row = 0; row < BOARD_SIDE; row++) {
+        for (let row = 0; row < BOARD_SIDE; row++) {
+            for (let col = 0; col < BOARD_SIDE; col++) {
                 let board1Content = board1.getContentByCoord(col, row);
                 let board2Content = board2.getContentByCoord(col, row);
 
@@ -57,13 +58,12 @@ const displayController = (() => {
                 yourSquare.classList.add("square");
                 yourSquare.id = `your-square-${col}-${row}`;
                 yourBoard.appendChild(yourSquare); 
-
-                detectController.detectSquareClick(yourSquare);
                 
                 if (board1Content === "miss") {
                     const xMark = document.createElement("i");
                     xMark.classList.add("fa-solid");
-                    xMark.classList.add("fa-xmark-large");
+                    xMark.classList.add("fa-xmark");
+                    yourSquare.appendChild(xMark);
                 } else if (board1Content === "") {
 
                 } else {
@@ -71,9 +71,17 @@ const displayController = (() => {
                     if (!board1.checkValidShot(col, row)) {
                         yourSquare.classList.add("shot-before");
 
+                        const ship = board1.getContentByCoord(col, row);
+                        const sunk = logicController.checkShipSunk("human", ship);
+
+                        if (sunk) {
+                            yourSquare.classList.add("ship-sunk");
+                        }
+
                         const xMark = document.createElement("i");
                         xMark.classList.add("fa-solid");
-                        xMark.classList.add("fa-xmark-large");
+                        xMark.classList.add("fa-xmark");
+                        yourSquare.appendChild(xMark);
                     } else {
                         // yourSquare.style.backgroundColor = WHITE;
                     }
@@ -89,7 +97,8 @@ const displayController = (() => {
                 if (board2Content === "miss") {
                     const xMark = document.createElement("i");
                     xMark.classList.add("fa-solid");
-                    xMark.classList.add("fa-xmark-large");
+                    xMark.classList.add("fa-xmark");
+                    aiSquare.appendChild(xMark);
                 } else if (board2Content === "") {
 
                 } else {
@@ -97,9 +106,17 @@ const displayController = (() => {
                     if (!board2.checkValidShot(col, row)) {
                         aiSquare.classList.add("shot-before");
 
+                        const ship = board2.getContentByCoord(col, row);
+                        const sunk = logicController.checkShipSunk("ai", ship);
+
+                        if (sunk) {
+                            aiSquare.classList.add("ship-sunk");
+                        }
+
                         const xMark = document.createElement("i");
                         xMark.classList.add("fa-solid");
-                        xMark.classList.add("fa-xmark-large");
+                        xMark.classList.add("fa-xmark");
+                        aiSquare.appendChild(xMark);
                     } else {
                         // enemySquare.style.backgroundColor = WHITE;
                     }

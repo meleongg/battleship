@@ -29,7 +29,7 @@ body {
     align-content: center;
 }
 
-.square:hover {
+#ai-board .square:hover {
     cursor: pointer;
 }
 
@@ -37,8 +37,19 @@ body {
     background-color: #FFF;
     height: 100%;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.square > * {
+    font-size: 35px;
 }
 
 .shot-before {
     background-color: #808080;
+}
+
+.ship-sunk {
+    color: #DC143C;
 }

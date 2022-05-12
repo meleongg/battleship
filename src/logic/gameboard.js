@@ -46,6 +46,7 @@ const gameboardFactory = () => {
             const shipHeadRow = shipHead[1];
 
             let orientation = checkOrientation(shipHead, ship);
+            console.log(orientation)
             let difference; 
 
             if (orientation === "x") {
@@ -98,18 +99,23 @@ const gameboardFactory = () => {
             switch (ship) {
                 case "destroyer":
                     destroyer.hit(difference);
+                    break;
                 case "sub":
                     sub.hit(difference);
+                    break;
                 case "cruiser":
                     cruiser.hit(difference);
+                    break;
                 case "battleship":
                     battleship.hit(difference);
+                    break;
                 default: 
                     carrier.hit(difference);
+                    break;
             }
 
         } else {
-            grid[row][col] = "miss";
+            grid[col][row] = "miss";
         }
     }
 
@@ -127,7 +133,15 @@ const gameboardFactory = () => {
         return grid[col][row];
     }
 
-    return { ships, grid, placeShip, checkValidShot, receiveAttack, isAllSunk, getContentByCoord }
+    const getShipByName = (ship) => {
+        for (let i = 0; i < ships.length; i++) {
+            if (ships[i].name === ship) {
+                return ships[i]; 
+            }
+        }
+    }
+
+    return { ships, grid, placeShip, checkValidShot, receiveAttack, isAllSunk, getContentByCoord, getShipByName }
 }
 
 export { gameboardFactory }
