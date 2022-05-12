@@ -1,5 +1,7 @@
-import { gameboardFactory, BOARD_SIDE } from "../src/logic/gameboard";
+import { gameboardFactory } from "../src/logic/gameboard";
 import { shipFactory } from "../src/logic/ship";
+
+const BOARD_SIDE = 10;
 
 let testBoard;
 let testBoardFull; 

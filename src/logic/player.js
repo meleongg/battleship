@@ -1,18 +1,17 @@
 import { gameboardFactory } from "./gameboard";
 
 class Player {
-    constructor(name, turn) {
-        this.name = name; 
+    constructor(turn) {
         this.board = gameboardFactory();
         this.turn = turn; 
     }
 
-    getBoard() {
-        return this.board; 
+    setTurn(value) {
+        this.turn = value;
     }
 
-    getName() {
-        return this.name;
+    getBoard() {
+        return this.board; 
     }
 
     getTurn() {

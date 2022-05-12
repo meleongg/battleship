@@ -1,4 +1,44 @@
 body {
     font-family: 'Oxygen', sans-serif;
     background-color: aqua;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#boards {
+    width: 90vw;
+    height: 600px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    align-content: center;
+}
+
+#your-board, #ai-board {
+    width: 400px;
+    height: 400px;
+    background-color: #333;
+    row-gap: 1px;
+    column-gap: 1px;
+    border: #333 solid 10px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    justify-items: center;
+    align-content: center;
+}
+
+.square:hover {
+    cursor: pointer;
+}
+
+.square {
+    background-color: #FFF;
+    height: 100%;
+    width: 100%;
+}
+
+.shot-before {
+    background-color: #808080;
 }

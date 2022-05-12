@@ -1,8 +1,8 @@
 import { Player } from "./player";
 
 class HumanPlayer extends Player {
-    constructor(name, turn) {
-        super(name, turn);
+    constructor(turn) {
+        super(turn);
     }
 
     // assume that the coord will always be valid 

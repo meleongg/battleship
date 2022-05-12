@@ -33,6 +33,5 @@ beforeEach(() => {
 });
 
 test("test constructor", () => {
-    expect(testPlayer.getName()).toMatch(/AI/);
     expect(testPlayer.getTurn()).toBeFalsy();
 });

@@ -1,7 +1,5 @@
 import { shipFactory } from "./ship";
 
-const BOARD_SIDE = 10;
-
 const gameboardFactory = () => {
     let grid = [["", "", "", "", "", "", "", "", "", ""],
                 ["", "", "", "", "", "", "", "", "", ""],
@@ -125,7 +123,11 @@ const gameboardFactory = () => {
         return true; 
     }
 
-    return { ships, grid, placeShip, checkValidShot, receiveAttack, isAllSunk }
+    const getContentByCoord = (col, row) => {
+        return grid[col][row];
+    }
+
+    return { ships, grid, placeShip, checkValidShot, receiveAttack, isAllSunk, getContentByCoord }
 }
 
-export { gameboardFactory, BOARD_SIDE }
+export { gameboardFactory }
