@@ -46,7 +46,6 @@ const gameboardFactory = () => {
             const shipHeadRow = shipHead[1];
 
             let orientation = checkOrientation(shipHead, ship);
-            console.log(orientation)
             let difference; 
 
             if (orientation === "x") {
@@ -73,8 +72,16 @@ const gameboardFactory = () => {
     const checkOrientation = (coord, ship) => {
         const col = coord[0];
         const row = coord[1];
-
-        return (grid[col + 1][row] === ship) ? "x" : "y";
+        
+        if (col + 1 > 9) {
+            return "y";
+        } else if (grid[col + 1][row] === ship) {
+            return "x";
+        } else if (row + 1 > 9) {
+            return "x";
+        } else {
+            return "y";
+        }
     }
 
     const receiveAttack = (coord) => {

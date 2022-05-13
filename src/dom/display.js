@@ -63,6 +63,7 @@ const displayController = (() => {
                     const xMark = document.createElement("i");
                     xMark.classList.add("fa-solid");
                     xMark.classList.add("fa-xmark");
+                    yourSquare.classList.add("miss");
                     yourSquare.appendChild(xMark);
                 } else if (board1Content === "") {
 
@@ -83,7 +84,7 @@ const displayController = (() => {
                         xMark.classList.add("fa-xmark");
                         yourSquare.appendChild(xMark);
                     } else {
-                        // yourSquare.style.backgroundColor = WHITE;
+                        yourSquare.classList.add("your-ship");
                     }
                 }
 
@@ -98,6 +99,7 @@ const displayController = (() => {
                     const xMark = document.createElement("i");
                     xMark.classList.add("fa-solid");
                     xMark.classList.add("fa-xmark");
+                    aiSquare.classList.add("miss");
                     aiSquare.appendChild(xMark);
                 } else if (board2Content === "") {
 
@@ -117,9 +119,7 @@ const displayController = (() => {
                         xMark.classList.add("fa-solid");
                         xMark.classList.add("fa-xmark");
                         aiSquare.appendChild(xMark);
-                    } else {
-                        // enemySquare.style.backgroundColor = WHITE;
-                    }
+                    } 
                 }
             }
         }

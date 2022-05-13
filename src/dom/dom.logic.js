@@ -3,9 +3,14 @@ import { HumanPlayer } from "../logic/human.player";
 import { displayController } from "./display";
 import { shipFactory } from "../logic/ship";
 
-const generateRandomNumber = () => {
-    const number = Math.floor(Math.random() * 10); 
+const generateRandomNumber = (min, max) => {
+    const number = Math.floor(Math.random() * (max - min + 1) + min); 
     return number; 
+}
+
+const generateRandomDirection = () => {
+    const number = Math.round(Math.random());
+    return (number === 0) ? "x" : "y";
 }
 
 const logicController = (() => {
@@ -19,6 +24,8 @@ const logicController = (() => {
     let battleship = shipFactory("battleship", 4);
     let carrier = shipFactory("carrier", 5);
 
+    let ships = [destroyer, sub, cruiser, battleship, carrier];
+
     const _fillBoard = (board) => {
         board.placeShip([[0, 0], [1, 0]], destroyer);
         board.placeShip([[2, 0], [3, 0], [4, 0]], sub);
@@ -27,14 +34,159 @@ const logicController = (() => {
         board.placeShip([[0, 5], [0, 6], [0, 7], [0, 8], [0, 9]], carrier);
     }
 
+    const _getXCoords = (shipName) => {
+        let headCol;
+        let headRow;
+
+        if (shipName === "destroyer") {
+            headCol = generateRandomNumber(0, 8);
+            headRow = generateRandomNumber(0, 9);
+
+            return [[headCol, headRow], [headCol + 1, headRow]];
+        }
+
+        if (shipName === "sub") {
+            headCol = generateRandomNumber(0, 7);
+            headRow = generateRandomNumber(0, 9);
+
+            return [[headCol, headRow], [headCol + 1, headRow], [headCol + 2, headRow]];
+        }
+
+        if (shipName === "cruiser") {
+            headCol = generateRandomNumber(0, 6);
+            headRow = generateRandomNumber(0, 9);
+
+            return [[headCol, headRow], [headCol + 1, headRow], [headCol + 2, headRow]];
+        }
+
+        if (shipName === "battleship") {
+            headCol = generateRandomNumber(0, 6);
+            headRow = generateRandomNumber(0, 9);
+
+            return [[headCol, headRow], [headCol + 1, headRow], [headCol + 2, headRow], [headCol + 3, headRow]];
+        }
+
+        if (shipName === "carrier") {
+            headCol = generateRandomNumber(0, 5);
+            headRow = generateRandomNumber(0, 9);
+
+            return [[headCol, headRow], [headCol + 1, headRow], [headCol + 2, headRow], [headCol + 3, headRow], [headCol + 4, headRow]];
+        }
+    }
+
+    const _getYCoords = (shipName) => {
+        let headCol;
+        let headRow; 
+
+        if (shipName === "destroyer") {
+            headCol = generateRandomNumber(0, 9);
+            headRow = generateRandomNumber(0, 8);
+
+            return [[headCol, headRow], [headCol, headRow + 1]];
+        }
+
+        if (shipName === "sub") {
+            headCol = generateRandomNumber(0, 9);
+            headRow = generateRandomNumber(0, 7);
+
+            return [[headCol, headRow], [headCol, headRow + 1], [headCol, headRow + 2]];
+        }
+
+        if (shipName === "cruiser") {
+            headCol = generateRandomNumber(0, 9);
+            headRow = generateRandomNumber(0, 6);
+
+            return [[headCol, headRow], [headCol, headRow + 1], [headCol, headRow + 2]];
+        }
+
+        if (shipName === "battleship") {
+            headCol = generateRandomNumber(0, 9);
+            headRow = generateRandomNumber(0, 6);
+
+            return [[headCol, headRow], [headCol, headRow + 1], [headCol, headRow + 2], [headCol, headRow + 3]];
+        }
+
+        if (shipName === "carrier") {
+            headCol = generateRandomNumber(0, 9);
+            headRow = generateRandomNumber(0, 5);
+
+            return [[headCol, headRow], [headCol, headRow + 1], [headCol, headRow + 2], [headCol, headRow + 3], [headCol, headRow + 4]];
+        }
+    }
+
+    const _resetChangedCoords = (coords, tempGrid) => {
+        for (let i = 0; i < coords.length; i++) {
+            const ithCoords = coords[i];
+            const col = ithCoords[0];
+            const row = ithCoords[1];
+
+            tempGrid[col][row] = "";
+        }
+    }
+
+    const _checkCoords = (shipName, coords, tempGrid) => {
+        const tempCoords = [];
+
+        for (let i = 0; i < coords.length; i++) {
+            const ithCoords = coords[i];
+            const col = ithCoords[0];
+            const row = ithCoords[1];
+
+            if (tempGrid[col][row] !== "") {
+                _resetChangedCoords(tempCoords, tempGrid);
+                return false; 
+            } else {
+                tempGrid[col][row] = shipName;
+                tempCoords.push([col, row]);
+            }
+        }
+
+        return true; 
+    }
+
+    const _fillAiBoard = (board) => {
+        let tempGrid = [["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""]];
+
+        for (let i = 0; i < ships.length; i++) {
+            const ship = ships[i];
+            const shipName = ship.name;
+            let isGoodPlacement = false; 
+
+            while (!isGoodPlacement) {
+                const direction = generateRandomDirection();
+                let coords;
+
+                if (direction === "x") {
+                    coords = _getXCoords(shipName);
+                } else {
+                    coords = _getYCoords(shipName);
+                }
+
+                if (_checkCoords(shipName, coords, tempGrid)) {
+                    board.placeShip(coords, ship);
+                    isGoodPlacement = true; 
+                }
+            }
+        }
+    }
+
     const _makeAIMove = (enemyBoard) => {
         let isValidCoord = false; 
         const humanBoard = getHumanBoard();
         const aiBoard = getAiBoard();
 
         while (!isValidCoord) {
-            let xCoord = generateRandomNumber();
-            let yCoord = generateRandomNumber();
+            let xCoord = generateRandomNumber(0, 9);
+            let yCoord = generateRandomNumber(0, 9);
 
             if (enemyBoard.checkValidShot(xCoord, yCoord)) {
                 enemyBoard.receiveAttack([xCoord, yCoord]);
@@ -58,7 +210,7 @@ const logicController = (() => {
         const humanBoard = humanPlayer.getBoard();
         const aiBoard = aiPlayer.getBoard();
 
-        _fillBoard(humanBoard);
+        _fillAiBoard(humanBoard);
         _fillBoard(aiBoard);
         // render the ships 
 
