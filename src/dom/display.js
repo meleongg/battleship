@@ -58,6 +58,10 @@ const displayController = (() => {
                 yourSquare.classList.add("square");
                 yourSquare.id = `your-square-${col}-${row}`;
                 yourBoard.appendChild(yourSquare); 
+
+                // PLACING
+                detectController.detectSquareHover(yourSquare);
+                detectController.detectHumanSquareClick(yourSquare);
                 
                 if (board1Content === "miss") {
                     const xMark = document.createElement("i");

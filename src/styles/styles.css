@@ -59,3 +59,11 @@ body {
 .your-ship {
     background-color: #808080;
 }
+
+.placement-hover {
+    background-color: #00FF00;
+}
+
+.invalid-placement {
+    background-color: #DC143C;
+}

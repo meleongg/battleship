@@ -179,6 +179,48 @@ const logicController = (() => {
         }
     }
 
+    let placingShips = true; 
+    let rotationAxis = "x";
+
+    const setRotationAxis = (value) => {
+        rotationAxis = value; 
+    }
+
+    const getRotationAxis = () => {
+        return rotationAxis;
+    }
+
+    const stillPlacingHumanShips = () => {
+        return placingShips;
+    }
+
+    let shipPlacementStatuses = { "destroyer" : false, "sub" : false, "cruiser" : false, "battleship" : false, "carrier" : false };
+
+    let currentShipPlacement;
+
+    const getCurrentShipPlacement = () => {
+        for (const shipName in shipPlacementStatuses) {
+            if (!shipPlacementStatuses[shipName]) {
+                currentShipPlacement = shipName; 
+                return currentShipPlacement;
+            }
+        }
+
+    }
+
+    const fillHumanBoard = (board) => {
+        let tempGrid = [["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", "", ""]];
+    }
+
     const _makeAIMove = (enemyBoard) => {
         let isValidCoord = false; 
         const humanBoard = getHumanBoard();
@@ -210,7 +252,7 @@ const logicController = (() => {
         const humanBoard = humanPlayer.getBoard();
         const aiBoard = aiPlayer.getBoard();
 
-        _fillAiBoard(humanBoard);
+        // _fillAiBoard(humanBoard);
         _fillBoard(aiBoard);
         // render the ships 
 
@@ -276,7 +318,7 @@ const logicController = (() => {
     }
 
     return { resetGame, changeTurn, checkValidTurn, getHumanBoard, getAiBoard, checkGameOver, getGameOver,
-        checkShipSunk }
+        checkShipSunk, stillPlacingHumanShips, setRotationAxis, getRotationAxis, getCurrentShipPlacement }
 })();
 
 export { logicController }
