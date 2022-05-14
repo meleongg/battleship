@@ -318,7 +318,7 @@ const detectController = (() => {
                     }   
                 }
             } else {
-                rotate.style.display = "none";
+                displayController.hideRotateBtn();
             }
         });
     }

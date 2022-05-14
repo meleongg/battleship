@@ -36,8 +36,8 @@ nav {
 }
 
 #your-board, #ai-board {
-    width: 400px;
-    height: 400px;
+    width: 350px;
+    height: 350px;
     background-color: #333;
     row-gap: 1px;
     column-gap: 1px;
@@ -61,7 +61,7 @@ nav {
 }
 
 #rotate-btn-container {
-    padding: 20px 0 20px 0;
+    padding: 10px 0 10px 0;
 }
 
 #rotate-btn, #reset-btn {
@@ -72,6 +72,7 @@ nav {
 #reset-game {
     display: flex;
     justify-content: center;
+    padding: 20px 0 20px 0;
 }
 
 button:hover {
@@ -89,7 +90,7 @@ button:hover {
 }
 
 .square > * {
-    font-size: 35px;
+    font-size: 25px;
 }
 
 .shot-before {

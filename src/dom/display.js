@@ -7,6 +7,7 @@ const yourBoard = document.getElementById("your-board");
 const aiBoard = document.getElementById("ai-board");
 
 const rotate = document.getElementById("rotate-btn");
+const rotateContainer = document.getElementById("rotate-btn-container");
 const reset = document.getElementById("reset-btn");
 
 const icon = document.getElementById("icon");
@@ -17,6 +18,7 @@ const BOARD_SIDE = 10;
 const displayController = (() => {
     const renderRotateBtn = () => {
         rotate.style.display = "block";
+        rotateContainer.style.display = "block";
     }
 
     const renderResetBtn = () => {
@@ -25,6 +27,11 @@ const displayController = (() => {
 
     const hideResetBtn = () => {
         reset.style.display = "none";
+    }
+
+    const hideRotateBtn = () => {
+        rotate.style.display = "none";
+        rotateContainer.style.display = "none";
     }
 
     const renderStatus = (text) => {
@@ -145,7 +152,8 @@ const displayController = (() => {
         }
     }
 
-    return { renderStatus, renderBoards, getBoardName, getSquareCoords, renderResetBtn, renderRotateBtn, hideResetBtn }
+    return { renderStatus, renderBoards, getBoardName, getSquareCoords, renderResetBtn, renderRotateBtn, hideResetBtn,
+        hideRotateBtn }
 })();
 
 export { displayController, BOARD_SIDE }

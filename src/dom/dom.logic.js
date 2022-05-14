@@ -242,6 +242,7 @@ const logicController = (() => {
         shipPlacementStatuses[ship.name] = true; 
     }
 
+    // TODO: make AI SMARTER
     const _makeAIMove = (enemyBoard) => {
         let isValidCoord = false; 
         const humanBoard = getHumanBoard();
