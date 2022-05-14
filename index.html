@@ -6,27 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/e71f8bf7e9.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oxygen:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oxygen:wght@400;700&display=swap" rel="stylesheet">
     <title>Battleship</title>
     <link rel="icon" type="image/png" id="icon">
 </head>
 <body>
     <header>
         <nav>
-            Battleship
+            <h1 id="title">BATTLESHIP</h1>
         </nav>
     </header>
     <div id="content">
         <div id="status-message"></div>
         <div id="boards">
-            <div id="your-board-container">
-                <h1>Friendly Waters</h1>
+            <div id="your-board-container" class="board-container">
+                <h1 class="waters-title">Friendly Waters</h1>
                 <div id="your-board"></div>
-                <button id="rotate-btn">Rotate</button>
+                <div id="rotate-btn-container">
+                    <button id="rotate-btn">Rotate</button>
+                </div>
             </div>
-            <div id="ai-board-container">
-                <h1>Enemy Waters</h1>
+            <div id="ai-board-container" class="board-container">
+                <h1 class="waters-title">Enemy Waters</h1>
                 <div id="ai-board"></div>
             </div>
         </div>
