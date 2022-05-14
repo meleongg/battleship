@@ -26,6 +26,21 @@ const logicController = (() => {
 
     let ships = [destroyer, sub, cruiser, battleship, carrier];
 
+    const _getShipLengthByName = (shipName) => {
+        switch (shipName) {
+            case "destroyer":
+                return 2;
+            case "sub":
+                return 3;
+            case "cruiser":
+                return 3;
+            case "battleship":
+                return 4;
+            default:
+                return 5;
+        }
+    }
+
     const getShipByName = (shipName) => {
         switch (shipName) {
             case "destroyer":
@@ -244,7 +259,200 @@ const logicController = (() => {
         shipPlacementStatuses[ship.name] = true; 
     }
 
-    // TODO: make AI SMARTER
+    // FAILED AI CODE
+
+    // let foundShip = false; 
+    // // first entry will always be the first hit found 
+    // let hitCoords = [];
+    // let leftShots = {};
+    // let upShots = {};
+    // let rightShots = {};
+    // let downShots = {};
+    // let shipHit; 
+    // let shipHitLength; 
+
+    // const _leftNotShotAlready = (col, row) => {
+    //     for (const coord in leftShots) {
+    //         let arrCol = parseInt(coord.substring(0, 1));
+    //         let arrRow = parseInt(coord.substring(2, 3));
+
+    //         if ((arrCol === col) && (arrRow === row)) {
+    //             return false; 
+    //         }
+    //     }
+
+    //     return true;
+    // }
+
+    // const _generateNextLeftShot = (obj) => {
+    //     if (Object.keys(obj).length === 0) {
+    //         return [hitCoords[0] - 1, hitCoords[1]];
+    //     } else {
+    //         const keys = Object.keys(obj);
+    //         const lastKey = keys[keys.length - 1];
+    //         const col = lastKey.substring(0, 1);
+    //         const row = lastKey.substring(2, 3);
+
+    //         return [col - 1, row];
+    //     }
+    
+    // }
+
+    // const _generateNextUpShot = (obj) => {
+    //     if (Object.keys(obj).length === 0) {
+    //         return [hitCoords[0], hitCoords[1] - 1];
+    //     } else {
+    //         const keys = Object.keys(obj);
+    //         const lastKey = keys[keys.length - 1];
+    //         const col = lastKey.substring(0, 1);
+    //         const row = lastKey.substring(2, 3);
+
+    //         return [col, row - 1];
+    //     }
+    
+    // }
+
+    // const _generateNextRightShot = (obj) => {
+    //     if (Object.keys(obj).length === 0) {
+    //         return [hitCoords[0] + 1, hitCoords[1]];
+    //     } else {
+    //         const keys = Object.keys(obj);
+    //         const lastKey = keys[keys.length - 1];
+    //         const col = lastKey.substring(0, 1);
+    //         const row = lastKey.substring(2, 3);
+
+    //         return [col + 1, row];
+    //     }
+    
+    // }
+
+    // const _generateNextDownShot = (obj) => {
+    //     if (Object.keys(obj).length === 0) {
+    //         return [hitCoords[0], hitCoords[1] + 1];
+    //     } else {
+    //         const keys = Object.keys(obj);
+    //         const lastKey = keys[keys.length - 1];
+    //         const col = lastKey.substring(0, 1);
+    //         const row = lastKey.substring(2, 3);
+
+    //         return [col, row + 1];
+    //     }
+    
+    // }
+
+    // const _previousShotWasHit = (obj) => {
+    //     const isLastHit = Object.values(obj).pop();
+
+    //     console.log(isLastHit)
+
+    //     if (isLastHit !== false) {
+    //         return true;
+    //     }
+
+    //     return false; 
+    // }
+
+    // const _generateNextShot = () => {
+    //     // we know the ship has not sunk yet
+    //     let col = hitCoords[0];
+    //     let row = hitCoords[1];
+    //     let tempCoords; 
+    //     let tempCol;
+    //     let tempRow; 
+    //     let coords; 
+    //     const humanBoard = getHumanBoard();
+
+    //     // go left 
+    //     if ((col - 1 >= 0) && ((Object.keys(leftShots).length === 0) || (_previousShotWasHit(leftShots)))) {
+    //         tempCoords = _generateNextLeftShot(leftShots);
+    //         tempCol = tempCoords[0];
+    //         tempRow = tempCoords[1];
+
+    //         if (humanBoard.checkValidShot(tempCol, tempRow)) {
+    //             coords = tempCoords;
+    //             leftShots[`${tempCol}-${tempRow}`] = humanBoard.checkHitShip(tempCol, tempRow); 
+    //         } 
+    //     } else if ((row - 1 >= 0) && ((Object.keys(upShots).length === 0) || (_previousShotWasHit(upShots)))) {
+    //         tempCoords = _generateNextUpShot(upShots);
+    //         tempCol = tempCoords[0];
+    //         tempRow = tempCoords[1];
+
+    //         if (humanBoard.checkValidShot(tempCol, tempRow)) {
+    //             coords = tempCoords;
+    //             leftShots[`${tempCol}-${tempRow}`] = humanBoard.checkHitShip(tempCol, tempRow); 
+    //         } 
+    //     } else if ((col + 1 <= 9) && ((Object.keys(rightShots).length === 0) || (_previousShotWasHit(rightShots)))) {
+    //         tempCoords = _generateNextRightShot(rightShots);
+    //         tempCol = tempCoords[0];
+    //         tempRow = tempCoords[1];
+
+    //         if (humanBoard.checkValidShot(tempCol, tempRow)) {
+    //             coords = tempCoords;
+    //             leftShots[`${tempCol}-${tempRow}`] = humanBoard.checkHitShip(tempCol, tempRow); 
+    //         } 
+    //     } else if ((row + 1 <= 9) && ((Object.keys(downShots).length === 0) || (_previousShotWasHit(downShots)))) {
+    //         tempCoords = _generateNextDownShot(downShots);
+    //         tempCol = tempCoords[0];
+    //         tempRow = tempCoords[1];
+
+    //         if (humanBoard.checkValidShot(tempCol, tempRow)) {
+    //             coords = tempCoords;
+    //             leftShots[`${tempCol}-${tempRow}`] = humanBoard.checkHitShip(tempCol, tempRow); 
+    //         } 
+    //     } 
+
+    //     return coords;
+    // }
+
+    // const _makeAIMove = (humanBoard) => {
+    //     let isValidCoord = false; 
+    //     const aiBoard = getAiBoard();
+
+    //     if (foundShip && !shipHit.isSunk()) {
+    //         const coords = _generateNextShot();
+    //         humanBoard.receiveAttack(coords);
+    //     } else {
+    //         hitCoords = [];
+    //         leftShots = {};
+    //         upShots = {};
+    //         rightShots = {};
+    //         downShots = {};
+    //     }
+
+    //     while (!isValidCoord && !foundShip) {
+    //         let col = generateRandomNumber(0, 9);
+    //         let row = generateRandomNumber(0, 9);
+    //         // let col = 5;
+    //         // let row = 0;
+
+    //         const shipHitStr = humanBoard.checkHitShip(col, row);
+
+    //         if (shipHitStr) {
+    //             shipHit = humanBoard.getShipByName(shipHitStr);
+    //             shipHitLength = _getShipLengthByName(shipHitStr);
+    //             foundShip = true; 
+    //             humanBoard.receiveAttack([col, row]);
+    //             // we always know the first one will be true, so we'll put it as false for the for loop to work
+    //             hitCoords = [col, row];
+    //             // console.log(hitCoords); this is fine
+    //             isValidCoord = true; 
+    //         } else if (humanBoard.checkValidShot(col, row)) {
+    //             // should only come here if it's going to be a missed shot
+    //             humanBoard.receiveAttack([col, row]);
+    //             foundShip = false; 
+    //             isValidCoord = true; 
+    //         }
+    //     }
+
+    //     if (foundShip && shipHit.isSunk()) {
+    //         foundShip = false; 
+    //     }
+
+    //     displayController.renderBoards(humanBoard, aiBoard);
+    //     checkGameOver();
+    //     changeTurn();
+    // }
+
     const _makeAIMove = (enemyBoard) => {
         let isValidCoord = false; 
         const humanBoard = getHumanBoard();

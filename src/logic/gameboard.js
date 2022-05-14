@@ -34,6 +34,41 @@ const gameboardFactory = () => {
         }
     }
 
+    const checkHitShip = (col, row) => {
+        if (grid[col][row] === "miss") {
+            return false; 
+        } else if (grid[col][row] === "") {
+            return false; 
+        } else {
+            const ship = grid[col][row];
+            const shipHead = shipHeads[ship];
+            const shipHeadCol = shipHead[0];
+            const shipHeadRow = shipHead[1];
+
+            let orientation = checkOrientation(shipHead, ship);
+            let difference; 
+
+            if (orientation === "x") {
+                difference = col - shipHeadCol;
+            } else {
+                difference = row - shipHeadRow; 
+            }
+
+            switch (ship) {
+                case "destroyer":
+                    return (destroyer.status[difference] === "hit") ? false : "destroyer";
+                case "sub":
+                    return (sub.status[difference] === "hit") ? false : "sub";
+                case "cruiser":
+                    return (cruiser.status[difference] === "hit") ? false : "cruiser";
+                case "battleship":
+                    return (battleship.status[difference] === "hit") ? false : "battleship";
+                default: 
+                    return (carrier.status[difference] === "hit") ? false : "carrier";
+            }
+        }
+    }
+
     const checkValidShot = (col, row) => {
         if (grid[col][row] === "miss") {
             return false; 
@@ -148,7 +183,8 @@ const gameboardFactory = () => {
         }
     }
 
-    return { ships, grid, placeShip, checkValidShot, receiveAttack, isAllSunk, getContentByCoord, getShipByName }
+    return { ships, grid, placeShip, checkValidShot, receiveAttack, isAllSunk, getContentByCoord, getShipByName,
+        checkHitShip }
 }
 
 export { gameboardFactory }
