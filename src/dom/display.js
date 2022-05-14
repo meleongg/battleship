@@ -1,5 +1,6 @@
 import { detectController } from "./detect";
 import { logicController } from "./dom.logic";
+import logo from "../images/battleship.png";
 
 const status = document.getElementById("status-message");
 const yourBoard = document.getElementById("your-board");
@@ -7,6 +8,9 @@ const aiBoard = document.getElementById("ai-board");
 
 const rotate = document.getElementById("rotate-btn");
 const reset = document.getElementById("reset-btn");
+
+const icon = document.getElementById("icon");
+icon.href = logo;
 
 const BOARD_SIDE = 10; 
 
@@ -22,7 +26,6 @@ const displayController = (() => {
     const hideResetBtn = () => {
         reset.style.display = "none";
     }
-    // hideResetBtn();
 
     const renderStatus = (text) => {
         status.innerText = text; 

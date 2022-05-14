@@ -212,7 +212,7 @@ const logicController = (() => {
         }
 
         if (!checkGameOver()) {
-            displayController.renderStatus("It's your turn!");
+            displayController.renderStatus("It's your turn to attack!");
         }
 
         return false; 
@@ -273,14 +273,14 @@ const logicController = (() => {
         humanPlayer.setTurn(true);
         aiPlayer.setTurn(false);
 
-        displayController.renderStatus("Place your boats!");
+        displayController.renderStatus("Place your destroyer!");
         displayController.renderRotateBtn();
         displayController.hideResetBtn();
 
         const humanBoard = humanPlayer.getBoard();
         const aiBoard = aiPlayer.getBoard();
 
-        _fillBoard(aiBoard);
+        _fillAiBoard(aiBoard);
 
         displayController.renderBoards(humanBoard, aiBoard);
     }

@@ -65,6 +65,7 @@ const detectController = (() => {
             removeSquareHovers();
             if (logicController.stillPlacingHumanShips()) {
                 const shipName = logicController.getCurrentShipPlacement();
+                displayController.renderStatus(`Place your ${shipName}!`);
 
                 const squareName = square.id; 
                     const boardName = displayController.getBoardName(squareName);
