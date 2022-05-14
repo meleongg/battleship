@@ -8,6 +8,13 @@ body {
     color: #FFF;
 }
 
+#content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 header {
     padding-top: 40px;
 }
@@ -126,4 +133,60 @@ button:hover {
 
 .invalid-placement {
     background-color: #DC143C;
+}
+
+@media only screen and (max-width: 800px) {
+    #boards {
+        width: 80vw;
+        grid-template-columns: 1fr !important;
+    }
+
+    #your-board, #ai-board {
+        width: 350px; 
+        height: 350px;
+    }
+
+    #status-container {
+        width: 400px;
+    }
+    
+    #status-message {
+        font-size: 20px;
+    }
+
+    #title {
+        font-size: 34px;
+    }
+
+    .square > * {
+        font-size: 20px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    #boards {
+        width: 65vw;
+        grid-template-columns: 1fr !important;
+    }
+
+    #your-board, #ai-board {
+        width: 200px; 
+        height: 200px;
+    }
+
+    #status-container {
+        width: 200px;
+    }
+    
+    #status-message {
+        font-size: 16px;
+    }
+
+    #title {
+        font-size: 30px;
+    }
+
+    .square > * {
+        font-size: 14px;
+    }
 }
