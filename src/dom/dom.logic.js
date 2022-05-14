@@ -15,8 +15,8 @@ const generateRandomDirection = () => {
 
 const logicController = (() => {
     let gameOver;
-    let humanPlayer = new HumanPlayer(true);
-    let aiPlayer = new AIPlayer(false);
+    let humanPlayer;
+    let aiPlayer;
 
     let destroyer = shipFactory("destroyer", 2);
     let sub = shipFactory("sub", 3);
@@ -25,6 +25,21 @@ const logicController = (() => {
     let carrier = shipFactory("carrier", 5);
 
     let ships = [destroyer, sub, cruiser, battleship, carrier];
+
+    const getShipByName = (shipName) => {
+        switch (shipName) {
+            case "destroyer":
+                return destroyer;
+            case "sub":
+                return sub;
+            case "cruiser":
+                return cruiser;
+            case "battleship":
+                return battleship;
+            default:
+                return carrier;
+        }
+    }
 
     const _fillBoard = (board) => {
         board.placeShip([[0, 0], [1, 0]], destroyer);
@@ -179,7 +194,6 @@ const logicController = (() => {
         }
     }
 
-    let placingShips = true; 
     let rotationAxis = "x";
 
     const setRotationAxis = (value) => {
@@ -191,7 +205,23 @@ const logicController = (() => {
     }
 
     const stillPlacingHumanShips = () => {
-        return placingShips;
+        for (const shipName in shipPlacementStatuses) {
+            if (!shipPlacementStatuses[shipName]) {
+                return true;
+            }
+        }
+
+        if (!checkGameOver()) {
+            displayController.renderStatus("It's your turn!");
+        }
+
+        return false; 
+    }
+
+    const _resetShipStatuses = () => {
+        for (const shipName in shipPlacementStatuses) {
+            shipPlacementStatuses[shipName] = false; 
+        }
     }
 
     let shipPlacementStatuses = { "destroyer" : false, "sub" : false, "cruiser" : false, "battleship" : false, "carrier" : false };
@@ -203,22 +233,13 @@ const logicController = (() => {
             if (!shipPlacementStatuses[shipName]) {
                 currentShipPlacement = shipName; 
                 return currentShipPlacement;
-            }
+            } 
         }
-
     }
 
-    const fillHumanBoard = (board) => {
-        let tempGrid = [["", "", "", "", "", "", "", "", "", ""],
-                        ["", "", "", "", "", "", "", "", "", ""],
-                        ["", "", "", "", "", "", "", "", "", ""],
-                        ["", "", "", "", "", "", "", "", "", ""],
-                        ["", "", "", "", "", "", "", "", "", ""],
-                        ["", "", "", "", "", "", "", "", "", ""],
-                        ["", "", "", "", "", "", "", "", "", ""],
-                        ["", "", "", "", "", "", "", "", "", ""],
-                        ["", "", "", "", "", "", "", "", "", ""],
-                        ["", "", "", "", "", "", "", "", "", ""]];
+    const humanPlaceShip = (board, coords, ship) => {
+        board.placeShip(coords, ship);
+        shipPlacementStatuses[ship.name] = true; 
     }
 
     const _makeAIMove = (enemyBoard) => {
@@ -244,17 +265,22 @@ const logicController = (() => {
     const resetGame = () => {
         gameOver = false;
 
+        _resetShipStatuses();
+
+        humanPlayer = new HumanPlayer(true);
+        aiPlayer = new AIPlayer(false);
+
         humanPlayer.setTurn(true);
         aiPlayer.setTurn(false);
 
-        displayController.renderStatus("your", gameOver);
-        // place ships
+        displayController.renderStatus("Place your boats!");
+        displayController.renderRotateBtn();
+        displayController.hideResetBtn();
+
         const humanBoard = humanPlayer.getBoard();
         const aiBoard = aiPlayer.getBoard();
 
-        // _fillAiBoard(humanBoard);
         _fillBoard(aiBoard);
-        // render the ships 
 
         displayController.renderBoards(humanBoard, aiBoard);
     }
@@ -264,22 +290,22 @@ const logicController = (() => {
             if (humanPlayer.getTurn()) {
                 humanPlayer.setTurn(false);
                 aiPlayer.setTurn(true);
-                displayController.renderStatus("AI's", gameOver);
+                // displayController.renderStatus("It's AI's turn!");
                 const humanBoard = getHumanBoard();
                 _makeAIMove(humanBoard);
             } else {
                 humanPlayer.setTurn(true);
                 aiPlayer.setTurn(false);
-                displayController.renderStatus("your", gameOver);
+                // displayController.renderStatus("It's your turn!");
             }
         } else {
             const winner = _getWinner();
-            displayController.renderStatus(winner, gameOver);
+            displayController.renderStatus(`${winner}`);
         }
     }
 
     const _getWinner = () => {
-        return (humanPlayer.getBoard().isAllSunk()) ? "AI has" : "You have";
+        return (humanPlayer.getBoard().isAllSunk()) ? "AI has won!" : "You have won!";
     }
 
     const checkValidTurn = () => {
@@ -297,6 +323,7 @@ const logicController = (() => {
     const checkGameOver = () => {
         if (humanPlayer.getBoard().isAllSunk() || aiPlayer.getBoard().isAllSunk()) {
             gameOver = true;
+            displayController.renderResetBtn();
         } 
     }
 
@@ -318,7 +345,8 @@ const logicController = (() => {
     }
 
     return { resetGame, changeTurn, checkValidTurn, getHumanBoard, getAiBoard, checkGameOver, getGameOver,
-        checkShipSunk, stillPlacingHumanShips, setRotationAxis, getRotationAxis, getCurrentShipPlacement }
+        checkShipSunk, stillPlacingHumanShips, setRotationAxis, getRotationAxis, getCurrentShipPlacement,
+        getShipByName, humanPlaceShip }
 })();
 
 export { logicController }

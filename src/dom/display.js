@@ -5,15 +5,27 @@ const status = document.getElementById("status-message");
 const yourBoard = document.getElementById("your-board");
 const aiBoard = document.getElementById("ai-board");
 
+const rotate = document.getElementById("rotate-btn");
+const reset = document.getElementById("reset-btn");
+
 const BOARD_SIDE = 10; 
 
 const displayController = (() => {
-    const renderStatus = (player, state) => {
-        if (!state) {
-            status.innerText = `It is now ${player} turn!`;
-        } else {
-            status.innerText = `${player} won!`;
-        }
+    const renderRotateBtn = () => {
+        rotate.style.display = "block";
+    }
+
+    const renderResetBtn = () => {
+        reset.style.display = "block";
+    }
+
+    const hideResetBtn = () => {
+        reset.style.display = "none";
+    }
+    // hideResetBtn();
+
+    const renderStatus = (text) => {
+        status.innerText = text; 
     }
 
     const getBoardName = (squareName) => {
@@ -98,6 +110,7 @@ const displayController = (() => {
                 aiBoard.appendChild(aiSquare); 
 
                 detectController.detectSquareClick(aiSquare);
+                detectController.detectAiSquareHover(aiSquare);
                 
                 if (board2Content === "miss") {
                     const xMark = document.createElement("i");
@@ -129,7 +142,7 @@ const displayController = (() => {
         }
     }
 
-    return { renderStatus, renderBoards, getBoardName, getSquareCoords }
+    return { renderStatus, renderBoards, getBoardName, getSquareCoords, renderResetBtn, renderRotateBtn, hideResetBtn }
 })();
 
 export { displayController, BOARD_SIDE }
