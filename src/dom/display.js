@@ -4,7 +4,9 @@ import logo from "../images/battleship.png";
 
 const status = document.getElementById("status-message");
 const yourBoard = document.getElementById("your-board");
+const aiBoardContainer = document.getElementById("ai-board-container");
 const aiBoard = document.getElementById("ai-board");
+const boards = document.getElementById("boards");
 
 const rotate = document.getElementById("rotate-btn");
 const rotateContainer = document.getElementById("rotate-btn-container");
@@ -23,6 +25,16 @@ const displayController = (() => {
 
     const renderResetBtn = () => {
         reset.style.display = "block";
+    }
+
+    const hideAiBoard = () => {
+        aiBoardContainer.style.display = "none";
+        boards.style.gridTemplateColumns = "1fr";
+    }
+
+    const renderAiBoard = () => {
+        aiBoardContainer.style.display = "grid";
+        boards.style.gridTemplateColumns = "repeat(2, 1fr)";
     }
 
     const hideResetBtn = () => {
@@ -153,7 +165,7 @@ const displayController = (() => {
     }
 
     return { renderStatus, renderBoards, getBoardName, getSquareCoords, renderResetBtn, renderRotateBtn, hideResetBtn,
-        hideRotateBtn }
+        hideRotateBtn, renderAiBoard, hideAiBoard }
 })();
 
 export { displayController, BOARD_SIDE }

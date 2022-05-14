@@ -21,6 +21,17 @@ nav {
     font-weight: 700;
 }
 
+#status-container {
+    border: 2px solid #FFF;
+    padding: 20px 0;
+    width: 400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333;
+}
+
 #status-message {
     font-size: 25px;
     text-align: center;
@@ -30,7 +41,7 @@ nav {
     width: 90vw;
     /* height: 600px; */
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     justify-items: center;
     align-content: center;
 }

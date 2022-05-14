@@ -214,6 +214,8 @@ const logicController = (() => {
         if (!checkGameOver()) {
             displayController.renderStatus("It's your turn to attack!");
         }
+        
+        displayController.renderAiBoard();
 
         return false; 
     }
@@ -277,6 +279,7 @@ const logicController = (() => {
         displayController.renderStatus("Place your destroyer!");
         displayController.renderRotateBtn();
         displayController.hideResetBtn();
+        displayController.hideAiBoard();
 
         const humanBoard = humanPlayer.getBoard();
         const aiBoard = aiPlayer.getBoard();
